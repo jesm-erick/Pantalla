@@ -13,8 +13,8 @@ sealed class Destinations(
         "Pantalla 2", Icons.Filled.Settings) {
         fun createRoute(newText: String) = "pantalla2/?newText=$newText"
     }
-    object Pantalla3: Destinations("pantalla3", "Pantalla 3",
-        Icons.Filled.Favorite)
-    object PantallaQR: Destinations("pantallaQR", "Pantalla QR",
-        Icons.Filled.Deck)
+    object Pantalla3: Destinations("pantalla3", "Pantalla 3", Icons.Filled.Favorite)
+    object PantallaQR: Destinations("pantallaQR", "Pantalla QR", Icons.Filled.Deck)
+
+    object Pantalla4: Destinations("pantalla4", "Pantalla4", Icons.Filled.Deck)
 }

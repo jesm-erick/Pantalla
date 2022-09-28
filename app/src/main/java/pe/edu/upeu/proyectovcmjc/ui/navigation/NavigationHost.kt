@@ -43,6 +43,9 @@ fun NavigationHost(
         composable(PantallaQR.route) {
             PantallaQR()
         }
+        composable(Pantalla4.route) {
+            Pantalla4()
+        }
 
     }
 }

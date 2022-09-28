@@ -72,6 +72,7 @@ fun MainScreen(
         Destinations.Pantalla2,
         Destinations.Pantalla3,
         Destinations.PantallaQR,
+        Destinations.Pantalla4,
     )
     Scaffold(
         scaffoldState = scaffoldState,
