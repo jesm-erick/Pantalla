@@ -1,4 +1,4 @@
-package pe.edu.upeu.proyectovcmjc.data.local.dao
+package pe.edu.upeu.proyectovcmjc.data.local
 
 import androidx.room.Database
 import androidx.room.RoomDatabase
