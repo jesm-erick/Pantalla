@@ -17,4 +17,6 @@ sealed class Destinations(
     object PantallaQR: Destinations("pantallaQR", "Pantalla QR", Icons.Filled.Deck)
 
     object Pantalla4: Destinations("pantalla4", "Pantalla4", Icons.Filled.Deck)
+
+    object PersonaUI: Destinations("Persona", "PErsona", Icons.Filled.Deck)
 }

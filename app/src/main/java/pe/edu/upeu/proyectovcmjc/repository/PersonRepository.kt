@@ -1,10 +1,12 @@
 package pe.edu.upeu.proyectovcmjc.repository
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import kotlinx.coroutines.delay
 import pe.edu.upeu.proyectovcmjc.data.local.dao.PersonaDao
 import pe.edu.upeu.proyectovcmjc.data.remote.RestDataSource
 import pe.edu.upeu.proyectovcmjc.modelo.Persona
+import pe.edu.upeu.proyectovcmjc.modelo.User
 import pe.edu.upeu.proyectovcmjc.utils.TokenUtils
 import javax.inject.Inject
 
@@ -23,6 +25,10 @@ class PersonRepositoryImp @Inject constructor(
 
     override fun reportarPersona(): LiveData<List<Persona>> {
         //delay(3000)
+
+        val token=dataSource.login(User("","jaseb@gmail.com","12345678"))
+        TokenUtils.TOKEN_CONTENT=token.body()?.token_type+" "+token.body()?.access_token
+        Log.i("VERX", "Token:"+TokenUtils.TOKEN_CONTENT)
         val data=dataSource.reportarPersona(TokenUtils.TOKEN_CONTENT).body()!!.data
         personaDao.insertarPersonas(data)
         return personaDao.reportarPersonas()

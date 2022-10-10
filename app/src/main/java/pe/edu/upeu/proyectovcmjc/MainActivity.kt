@@ -16,6 +16,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.compose.rememberNavController
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 import pe.edu.upeu.proyectovcmjc.ui.navigation.Destinations
 import pe.edu.upeu.proyectovcmjc.ui.navigation.NavigationHost
@@ -26,6 +27,7 @@ import pe.edu.upeu.proyectovcmjc.ui.presentation.components.TopBar
 import pe.edu.upeu.proyectovcmjc.ui.theme.BLUE800
 import pe.edu.upeu.proyectovcmjc.ui.theme.ProyectoVCMJCTheme
 
+@AndroidEntryPoint
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -73,6 +75,7 @@ fun MainScreen(
         Destinations.Pantalla3,
         Destinations.PantallaQR,
         Destinations.Pantalla4,
+        Destinations.PersonaUI,
     )
     Scaffold(
         scaffoldState = scaffoldState,

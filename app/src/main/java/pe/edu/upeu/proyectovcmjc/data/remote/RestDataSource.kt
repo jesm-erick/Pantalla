@@ -23,7 +23,7 @@ interface RestDataSource {
     @POST("/apiv1/persona")
     suspend fun insertarPersona(@Body persona: Persona):Response<MsgModelResponse>
 
-    @GET("/apiv1/user/login")
-    suspend fun login(@Body user: User):Response<UserResponse>
+    @POST("/api/auth/login")
+    fun login(@Body user: User):Response<UserResponse>
 
 }
