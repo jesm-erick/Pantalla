@@ -138,7 +138,7 @@ fun MyApp(
                         Column(
                             Modifier.weight(1f),
                         ) {
-                            Text("${persona.nombre} ${persona.apellidoPaterno}")
+                            Text("${persona.nombre} ${persona.apellido_paterno}")
                             Text(persona.telefono!!)
                         }
                         Spacer()
