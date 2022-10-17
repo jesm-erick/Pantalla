@@ -18,10 +18,11 @@ import javax.inject.Singleton
 @Module
 @InstallIn(SingletonComponent::class)
 class DataSourceModule {
+
     @Singleton
     @Provides
     @Named("BaseUrl")
-    fun provideBaSeUrl()="http://172.23.11.45:8000"
+    fun provideBaseUrl()="http://172.23.11.45:8000/"
 
     @Singleton
     @Provides
@@ -32,20 +33,20 @@ class DataSourceModule {
     }
     @Singleton
     @Provides
-    fun resDataSource(retrofit: Retrofit):RestDataSource = retrofit.create(RestDataSource::class.java)
+    fun restDataSource(retrofit: Retrofit):RestDataSource = retrofit.create(RestDataSource::class.java)
 
     @Singleton
     @Provides
-    fun dbDataSource(@ApplicationContext context: Context):DbDataSource{
+    fun dbDataSource(@ApplicationContext context:Context):DbDataSource{
         return Room.databaseBuilder(context, DbDataSource::class.java, "db_persona")
             .fallbackToDestructiveMigration().build()
     }
 
     @Singleton
     @Provides
-    fun personaDao(db: DbDataSource):PersonaDao=db.personaDao()
-}
+    fun personaDao(db:DbDataSource):PersonaDao=db.personaDao()
 
+}
 
 
 

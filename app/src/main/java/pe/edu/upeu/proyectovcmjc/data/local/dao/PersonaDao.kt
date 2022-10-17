@@ -10,17 +10,18 @@ interface PersonaDao {
     suspend fun insertarPersona(persona: Persona)
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertarPersonas(persona: List<Persona>)
+    suspend fun insetarPersonas(persona: List<Persona>)
 
     @Update
     suspend fun actualizarPersona(persona: Persona)
 
     @Delete
-    suspend fun eleminarPersona(persona: Persona)
+    suspend fun eliminarPersona(persona: Persona)
 
     @Query("select * from persona")
     fun reportarPersonas():LiveData<List<Persona>>
 
-    @Query("select * from persona where id=:id")
-    fun buscarPersona(id:Int):LiveData<Persona>
+    @Query("select * from persona where id=:idx")
+    fun buscarPersona(idx:Int):LiveData<Persona>
+
 }

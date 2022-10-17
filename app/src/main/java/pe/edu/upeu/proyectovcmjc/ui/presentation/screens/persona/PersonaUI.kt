@@ -24,6 +24,7 @@ import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import coil.compose.rememberImagePainter
+import com.google.gson.Gson
 import pe.edu.upeu.proyectovcmjc.R
 
 import com.valentinilk.shimmer.shimmer
@@ -32,58 +33,21 @@ import pe.edu.upeu.proyectovcmjc.utils.TokenUtils
 import pe.edu.upeu.proyectovcmjc.utils.isInternetAvailable
 
 @Composable
-fun Spacer(size: Int = 8) = Spacer(modifier = Modifier.size(size.dp))
-@Composable
-fun ImageLoading() {
-    Box(modifier = Modifier.shimmer()) {
-        Box(
-            modifier = Modifier
-                .size(50.dp)
-                .background(Color.Gray)
-        )
-    }
-}
-
-
-@Composable
-fun LoadingCard() {
-    Card(
-        shape = RoundedCornerShape(8.dp),
-        elevation = 1.dp,
-        modifier = Modifier
-            .padding(horizontal = 8.dp, vertical = 4.dp)
-            .fillMaxWidth()
-            .testTag("loadingCard")
-    ) {
-        Row(modifier = Modifier.padding(8.dp)) {
-            ImageLoading()
-            Spacer()
-            Column {
-                Spacer()
-                Box(modifier = Modifier.shimmer()) {
-                    Column {
-                        Box(
-                            modifier = Modifier
-                                .height(15.dp)
-                                .fillMaxWidth()
-                                .background(Color.Gray)
-                        )
-                        Spacer()
-                        Box(
-                            modifier = Modifier
-                                .height(15.dp)
-                                .fillMaxWidth()
-                                .background(Color.Gray)
-                        )
-                    }
-                }
-            }
+fun PersonaUI (navegarEditarPer: (String) -> Unit, viewModel: PersonaViewModel= hiltViewModel()){
+    val users by viewModel.users.observeAsState(arrayListOf())
+    val isLoading by viewModel.isLoading.observeAsState(false)
+    MyApp(onAddClick = {
+        //viewModel.addUser()
+        navegarEditarPer((0).toString())
+    }, onDeleteClick = {
+        viewModel.deleteUser(it)
+    }, users, isLoading,
+        onEditClick = {
+            val jsonString = Gson().toJson(it)
+            navegarEditarPer(jsonString)
         }
-    }
+    )
 }
-
-
-
 
 @Composable
 fun MyApp(
@@ -91,19 +55,24 @@ fun MyApp(
     onDeleteClick: ((toDelete: Persona) -> Unit)? = null,
     personas: List<Persona>,
     isLoading: Boolean,
+    onEditClick: ((toPersona: Persona)->Unit)?=null
 ) {
     val context = LocalContext.current
     Scaffold(
-        floatingActionButton = { FloatingActionButton(onClick = {
-            onAddClick?.invoke()
-        }) {
-            Icon(imageVector = Icons.Default.Add, contentDescription =
-            "Fab Icon")
-        } },
+        floatingActionButton = {
+            FloatingActionButton(onClick = {
+                onAddClick?.invoke()
+            }) {
+                Icon(
+                    imageVector = Icons.Default.Add, contentDescription =
+                    "Fab Icon"
+                )
+            }
+        },
         isFloatingActionButtonDocked = false,
         floatingActionButtonPosition = FabPosition.Center,
     ) {
-        LazyColumn {
+        LazyColumn{
             var itemCount = personas.size
             if (isLoading) itemCount++
             items(count = itemCount) { index ->
@@ -149,12 +118,13 @@ fun MyApp(
                         }
                         IconButton(onClick = {
 //onDeleteClick?.invoke(persona)
-                            Log.i("VERTOKEN","Holas")
+                            Log.i("VERTOKEN", "Holas")
                             Log.i("VERTOKEN", TokenUtils.TOKEN_CONTENT)
-                            var estado= isInternetAvailable(context)
-                            Log.i("CONEXION", "VEr: "+estado)
+                            var estado = isInternetAvailable(context)
+                            Log.i("CONEXION", "VEr: " + estado)
+                            onEditClick?.invoke(persona)
                         }) {
-                            Icon(Icons.Filled.Edit, "Editar",tint = Color.Blue)
+                            Icon(Icons.Filled.Edit, "Editar", tint = Color.Blue)
                         }
                     }
                 }
@@ -163,15 +133,53 @@ fun MyApp(
     }
 }
 
-
+@Composable
+fun Spacer(size: Int = 8) = Spacer(modifier = Modifier.size(size.dp))
 
 @Composable
-fun PersonaUI (viewModel: PersonaViewModel= hiltViewModel()){
-    val users by viewModel.users.observeAsState(arrayListOf())
-    val isLoading by viewModel.isLoading.observeAsState(false)
-    MyApp(onAddClick = {
-        viewModel.addUser()
-    }, onDeleteClick = {
-        viewModel.deleteUser(it)
-    }, users, isLoading)
+fun ImageLoading() {
+    Box(modifier = Modifier.shimmer()) {
+        Box(
+            modifier = Modifier
+                .size(50.dp)
+                .background(Color.Gray)
+        )
+    }
+}
+
+@Composable
+fun LoadingCard() {
+    Card(
+        shape = RoundedCornerShape(8.dp),
+        elevation = 1.dp,
+        modifier = Modifier
+            .padding(horizontal = 8.dp, vertical = 4.dp)
+            .fillMaxWidth()
+            .testTag("loadingCard")
+    ) {
+        Row(modifier = Modifier.padding(8.dp)) {
+            ImageLoading()
+            Spacer()
+            Column {
+                Spacer()
+                Box(modifier = Modifier.shimmer()) {
+                    Column {
+                        Box(
+                            modifier = Modifier
+                                .height(15.dp)
+                                .fillMaxWidth()
+                                .background(Color.Gray)
+                        )
+                        Spacer()
+                        Box(
+                            modifier = Modifier
+                                .height(15.dp)
+                                .fillMaxWidth()
+                                .background(Color.Gray)
+                        )
+                    }
+                }
+            }
+        }
+    }
 }

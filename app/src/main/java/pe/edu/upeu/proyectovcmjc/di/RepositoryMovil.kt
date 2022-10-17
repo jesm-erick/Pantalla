@@ -4,15 +4,15 @@ import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
-import pe.edu.upeu.proyectovcmjc.repository.PersonRepository
-import pe.edu.upeu.proyectovcmjc.repository.PersonRepositoryImp
+import pe.edu.upeu.proyectovcmjc.repository.PersonaRepository
+import pe.edu.upeu.proyectovcmjc.repository.PersonaRepositoryImp
 import javax.inject.Singleton
 
 @Module
 @InstallIn(SingletonComponent::class)
-abstract class RepositoryMovil {
+abstract class RepositoryModule {
 
     @Binds
     @Singleton
-    abstract fun personaRepository(perRepos: PersonRepositoryImp): PersonRepository
+    abstract fun personaRepository(perRepos: PersonaRepositoryImp): PersonaRepository
 }

@@ -13,40 +13,65 @@ import pe.edu.upeu.proyectovcmjc.modelo.User
 import pe.edu.upeu.proyectovcmjc.utils.TokenUtils
 import javax.inject.Inject
 
-interface PersonRepository {
+interface PersonaRepository {
+    suspend fun deletePersona(persona: Persona)
+    fun reportarPersonas():LiveData<List<Persona>>
+    fun buscarPersonaId(id:Int):LiveData<Persona>
+    suspend fun insertarPersona(persona: Persona):Boolean
+    suspend fun modificarRemotePersona(persona: Persona) :Boolean
 
-    suspend fun deletePersona (persona: Persona)
-
-    fun reportarPersona():LiveData<List<Persona>>
 }
 
-class PersonRepositoryImp @Inject constructor(
-    private val dataSource: RestDataSource,
-    private val personaDao: PersonaDao,
-):PersonRepository{
-    override suspend fun deletePersona(persona: Persona) =personaDao.eleminarPersona(persona)
+class PersonaRepositoryImp @Inject constructor(
+    private val dataSource:RestDataSource,
+    private val personaDao: PersonaDao
+):PersonaRepository{
+    override suspend fun deletePersona(persona: Persona){
+        CoroutineScope(Dispatchers.IO).launch {
+            Log.i("DELETX", ""+persona.id)
+            dataSource.deletePersona(TokenUtils.TOKEN_CONTENT,persona.id)
+        }
+        personaDao.eliminarPersona(persona)
+    }
 
-    override fun reportarPersona(): LiveData<List<Persona>> {
+    override fun reportarPersonas(): LiveData<List<Persona>> {
         //delay(3000)
-
-
         try {
             CoroutineScope(Dispatchers.IO).launch {
                 delay(3000)
-                Log.i("VERRX", "Llega aqui!!")
-                val tokenx = dataSource.login(User("", "jaseb@gmail.com", "12345678"))
-                Log.i("VERRX", "${tokenx.token_type} ${tokenx.access_token}")
-                TokenUtils.TOKEN_CONTENT = "${tokenx.token_type} ${tokenx.access_token}"
-                val data = dataSource.reportarPersona(TokenUtils.TOKEN_CONTENT).body()!!.data
-                //Log.i("VERRX", "Llega aqui!!" + data.toString())
-                personaDao.insertarPersonas(data)
+                val totek=dataSource.login(User("", "jaseb@upeu.edu.pe", "12345678"))
+                TokenUtils.TOKEN_CONTENT=totek?.token_type+" "+totek?.access_token
+                Log.i("VERX", "Token:"+TokenUtils.TOKEN_CONTENT)
+                val data=dataSource.reportarPersona(TokenUtils.TOKEN_CONTENT).body()!!.data
+                personaDao.insetarPersonas(data)
             }
-        } catch (e: Exception) {
-            Log.i("ERROR", ""+e.message)
+        }catch (e:Exception){
+            Log.i("ERRORX", "Error:"+e.message)
         }
-
         return personaDao.reportarPersonas()
+    }
 
+    override fun buscarPersonaId(id: Int): LiveData<Persona> {
+        return personaDao.buscarPersona(id)
+    }
+
+    override suspend fun insertarPersona(persona: Persona):Boolean{
+        var dd:Boolean=false
+        CoroutineScope(Dispatchers.IO).launch {
+            Log.i("DATA", "T:"+TokenUtils.TOKEN_CONTENT)
+            Log.i("DATA", "D:"+persona.toString())
+            dd=dataSource.insertarPersona(TokenUtils.TOKEN_CONTENT,persona).body()?.success!!
+        }
+        return dd
+    }
+    override suspend fun modificarRemotePersona(persona: Persona):Boolean{
+        var dd:Boolean=false
+        CoroutineScope(Dispatchers.IO).launch {
+            Log.i("DATA", "T:"+TokenUtils.TOKEN_CONTENT)
+            Log.i("DATA", "D:"+persona.toString())
+            dd=dataSource.actualizarPersona(TokenUtils.TOKEN_CONTENT, persona.id, persona).body()?.success!!
+        }
+        return dd
     }
 
 }

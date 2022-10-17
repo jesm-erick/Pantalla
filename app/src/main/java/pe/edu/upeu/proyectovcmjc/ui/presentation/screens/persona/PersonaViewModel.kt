@@ -8,26 +8,30 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import pe.edu.upeu.proyectovcmjc.modelo.Persona
-import pe.edu.upeu.proyectovcmjc.repository.PersonRepository
+import pe.edu.upeu.proyectovcmjc.repository.PersonaRepository
 import javax.inject.Inject
 
 @HiltViewModel
 class PersonaViewModel @Inject constructor(
-    private val userRepo: PersonRepository
+    private val userRepo: PersonaRepository
 ) : ViewModel() {
+
     private val _isLoading: MutableLiveData<Boolean> by lazy {
         MutableLiveData<Boolean>(false)
     }
+
     val users: LiveData<List<Persona>> by lazy {
-        userRepo.reportarPersona()
+        userRepo.reportarPersonas()
     }
+
     val isLoading: LiveData<Boolean> get() = _isLoading
+
     fun addUser() {
         if (_isLoading.value == false)
-            viewModelScope.launch(Dispatchers.IO) {
+            viewModelScope.launch  (Dispatchers.IO) {
                 _isLoading.postValue(true)
-                //userRepo.
-               // _isLoading.postValue(false)
+                // userRepo._isLoading.postValue(false)
+
             }
     }
 

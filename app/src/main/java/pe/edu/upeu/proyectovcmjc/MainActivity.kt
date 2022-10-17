@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -15,6 +16,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.compose.rememberNavController
+import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
@@ -48,25 +50,17 @@ class MainActivity : ComponentActivity() {
     }
 }
 
-@Composable
-fun Greeting(name: String) {
-    Text(text = "Hello $name!")
-}
 
-@Preview(showBackground = true)
-@Composable
-fun DefaultPreview() {
-    ProyectoVCMJCTheme {
-        Greeting("Android")
-    }
-}
-
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MainScreen(
     darkMode: MutableState<Boolean>
 ) {
     val navController = rememberNavController()
-    val scaffoldState = rememberScaffoldState(drawerState = rememberDrawerState(initialValue = DrawerValue.Closed))
+    val scaffoldState = rememberScaffoldState(
+        drawerState = rememberDrawerState(initialValue =
+        DrawerValue.Closed)
+    )
     val scope = rememberCoroutineScope()
     val openDialog = remember { mutableStateOf(false) }
     val navigationItems = listOf(
@@ -75,18 +69,26 @@ fun MainScreen(
         Destinations.Pantalla3,
         Destinations.PantallaQR,
         Destinations.Pantalla4,
-        Destinations.PersonaUI,
+        Destinations.PersonaUI
+    )
+
+    val navigationItems2 = listOf(
+        Destinations.Pantalla1,
+        Destinations.Pantalla2,
+        Destinations.Pantalla3,
+        Destinations.PantallaQR
     )
     Scaffold(
         scaffoldState = scaffoldState,
-        bottomBar = { BottomNavigationBar(navController = navController,
-            items = navigationItems) },
-        floatingActionButton = { FloatingActionButton(onClick = {}) {
+        /*bottomBar = {
+            BottomNavigationBar(navController = navController, items = navigationItems2) },*/
+        /*floatingActionButton = { FloatingActionButton(onClick = {}) {
             Icon(imageVector = Icons.Default.Add, contentDescription =
             "Fab Icon")
         } },
         isFloatingActionButtonDocked = false,
-        floatingActionButtonPosition = FabPosition.End,
+        floatingActionButtonPosition = FabPosition.End,*/
+
         topBar = {
             TopBar(
                 scope,
@@ -120,4 +122,33 @@ fun MainScreen(
     }
     Dialog(showDialog = openDialog.value, dismissDialog = {
         openDialog.value = false })
+}
+
+
+
+
+
+@OptIn(ExperimentalPermissionsApi::class)
+@Composable
+fun Greeting(name: String) {
+    Text(text = "Hello $name!")
+
+    /*val navController = rememberNavController()
+    NavHost(navController = navController, "qr"){
+        composable("home"){
+            Pantalla3()
+        }
+        composable("qr"){
+            PantallaQR(navController)
+        }
+    }*/
+
+}
+
+@Preview(showBackground = true)
+@Composable
+fun DefaultPreview() {
+    ProyectoVCMJCTheme {
+        Greeting("Android")
+    }
 }

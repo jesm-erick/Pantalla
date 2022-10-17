@@ -22,6 +22,7 @@ import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.AndroidView
 import androidx.core.content.ContextCompat
+import androidx.navigation.NavHostController
 import pe.edu.upeu.proyectovcmjc.ui.qr.BarCodeAnalyser
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.rememberPermissionState
@@ -30,7 +31,7 @@ import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
 @ExperimentalPermissionsApi
 @Composable
-fun PantallaQR() {
+fun PantallaQR(navController: NavHostController) {
     BoxWithConstraints(
         modifier = Modifier
             .fillMaxSize()

@@ -7,6 +7,6 @@ import pe.edu.upeu.proyectovcmjc.data.local.dao.PersonaDao
 
 
 @Database(entities = [Persona::class], version = 1)
-abstract class DbDataSource:RoomDatabase(){
+abstract class DbDataSource:RoomDatabase() {
     abstract fun personaDao():PersonaDao
 }
